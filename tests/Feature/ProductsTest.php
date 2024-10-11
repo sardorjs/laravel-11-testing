@@ -21,8 +21,6 @@ class ProductsTest extends TestCase
      * * make test for each scenario
      */
 
-
-
     public function test_products_page_contains_empty_table(): void
     {
         $response = $this->get('/products');
@@ -34,14 +32,18 @@ class ProductsTest extends TestCase
 
     public function test_products_page_contains_non_empty_table(): void
     {
-        Product::create([
+        $product = Product::create([
             'name' => "Product 2",
             'price' => 1234
         ]);
         $response = $this->get('/products');
 
         $response->assertStatus(200);
+        $response->assertDontSee('No products found');
         $response->assertSee('Product 2');
+        $response->assertViewHas('products', function ($collection) use ($product) {
+           return $collection->contains($product);
+        });
     }
 
 }
