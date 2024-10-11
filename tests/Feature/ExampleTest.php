@@ -20,11 +20,11 @@ class ExampleTest extends TestCase
     /**
      * @return void
      */
-    public function test_the_homepage_contains_symfony(): void
+    public function test_the_homepage_contains_laravel(): void
     {
         $response = $this->get('/');
 
-        $response->assertSee('Symfony');
+        $response->assertSee('Laravel');
 
         $response->assertStatus(200);
 
