@@ -51,6 +51,11 @@ class ProductsTest extends TestCase
      * The recommendation is to start test from sad path(s), bad scenarios, unhappy situations - then write happy path(s)
      */
 
+    /**
+     * What's next: Mocking, Practical Examples, Faking Scenarios: Send Email, Queue, External APIs, Events, Services
+     * * Advanced level
+     */
+
     protected function setUp(): void
     {
         parent::setUp();

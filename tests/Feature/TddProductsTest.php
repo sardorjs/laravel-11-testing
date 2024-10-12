@@ -10,6 +10,12 @@
  * * green - write code so test would be successful
  * * refactor - code so it would be well written
  */
+
+/**
+ * What's next: Mocking, Practical Examples, Faking Scenarios: Send Email, Queue, External APIs, Events, Services
+ * * Advanced level
+ */
+
 beforeEach(function(){
     $this->user = createUser();
     $this->admin = createUser(true);
