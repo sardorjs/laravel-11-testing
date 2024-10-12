@@ -157,7 +157,20 @@ class ProductsTest extends TestCase
         $response->assertSee('value="'.$product->name.'"', false);
         $response->assertSee('value="'.$product->price.'"', false);
         $response->assertViewHas('product', $product);
-
     }
+
+    public function test_product_update_validation_redirects_back_to_form(): void
+    {
+        $product = Product::factory()->create();
+        $response = $this->actingAs($this->admin)->put('/products/'.$product->id, [
+            'name' => '',
+            'price' => 0,
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors(['name', 'price']);
+        $response->assertInvalid(['name', 'price']);
+    }
+
 
 }
