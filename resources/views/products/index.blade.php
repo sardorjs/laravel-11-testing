@@ -1,3 +1,10 @@
+@if(auth()->user()->is_admin)
+    <a href="{{ route('products.create') }}">
+        Add new product
+    </a>
+@endif
+
+
 @forelse($products as $product)
     <h2>{{ $product->name }}</h2>
     <h3>{{ $product->price }}</h3>
