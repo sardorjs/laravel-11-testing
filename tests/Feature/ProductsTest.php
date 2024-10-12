@@ -14,6 +14,7 @@ class ProductsTest extends TestCase
     use RefreshDatabase; // always refresh migrate when launching tests
 
     private User $user;
+    private User $admin;
     /**
      * AAA "Arrange, Act, Assert" - Automated Testing - every function - must have these 3 things
      * 1) Arrange - means prepare scenario - create all need credentials, info, data to work with
@@ -23,19 +24,19 @@ class ProductsTest extends TestCase
      * * make test for each scenario
      */
 
-    private function createUser(bool $isAdmin = false): User
-    {
-        return User::factory()->create([
-            'is_admin' => $isAdmin,
-        ]);
-    }
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->user = $this->createUser();
         $this->admin = $this->createUser(isAdmin: true);
+    }
+
+    private function createUser(bool $isAdmin = false): User
+    {
+        return User::factory()->create([
+            'is_admin' => $isAdmin,
+        ]);
     }
 
     public function test_products_page_contains_empty_table(): void
