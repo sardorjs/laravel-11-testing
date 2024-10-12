@@ -40,6 +40,13 @@ class ProductsTest extends TestCase
      * - 3. Anything related to payments
      */
 
+    /**
+     * There is no need to cover packages that you are implementing to your app
+     * - because of authors of these packages are already done it before you
+     * - if no, there are many doubts should you use it then
+     * - we must look for seriousness of this package - valid to use or no
+     */
+
     protected function setUp(): void
     {
         parent::setUp();
