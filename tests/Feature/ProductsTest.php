@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -23,7 +24,8 @@ class ProductsTest extends TestCase
 
     public function test_products_page_contains_empty_table(): void
     {
-        $response = $this->get('/products');
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get('/products');
 
         $response->assertStatus(200);
 
@@ -32,11 +34,13 @@ class ProductsTest extends TestCase
 
     public function test_products_page_contains_non_empty_table(): void
     {
+        $user = User::factory()->create();
+
         $product = Product::create([
             'name' => "Product 2",
             'price' => 1234
         ]);
-        $response = $this->get('/products');
+        $response = $this->actingAs($user)->get('/products');
 
         $response->assertStatus(200);
         $response->assertDontSee('No products found');
@@ -49,6 +53,7 @@ class ProductsTest extends TestCase
 
     public function test_paginated_products_table_doesnt_contain_11th_record(): void
     {
+        $user = User::factory()->create();
         for ($i = 1; $i <= 11; $i++) {
             $product = Product::create([
                 'name' => "Product $i",
@@ -56,7 +61,7 @@ class ProductsTest extends TestCase
             ]);
         }
 
-        $response = $this->get('/products');
+        $response = $this->actingAs($user)->get('/products');
 
         $response->assertStatus(200);
 
@@ -68,10 +73,12 @@ class ProductsTest extends TestCase
 
     public function test_paginated_products_table_doesnt_contain_11th_record_via_factory(): void
     {
+        $user = User::factory()->create();
+
         $products = Product::factory()->count(11)->create();
         $lastProduct = $products->last();
 
-        $response = $this->get('/products');
+        $response = $this->actingAs($user)->get('/products');
 
         $response->assertStatus(200);
 
