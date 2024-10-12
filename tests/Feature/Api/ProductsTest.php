@@ -24,6 +24,12 @@ class ProductsTest extends TestCase
      * * make test for each scenario
      */
 
+    /**
+     * To run specific test(s)
+     * - php artisan test --filter=AuthTest
+     * - php artisan test --filter=test_api_product_invalid_store_returns_error
+     */
+
     protected function setUp(): void
     {
         parent::setUp();
