@@ -47,6 +47,10 @@ class ProductsTest extends TestCase
      * - we must look for seriousness of this package - valid to use or no
      */
 
+    /**
+     * The recommendation is to start test from sad path(s), bad scenarios, unhappy situations - then write happy path(s)
+     */
+
     protected function setUp(): void
     {
         parent::setUp();
