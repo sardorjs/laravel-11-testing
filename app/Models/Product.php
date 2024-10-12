@@ -18,7 +18,7 @@ class Product extends Model
      */
     public function getPriceEuroAttribute(): float
     {
-        return (new CurrencyService())->convert(amount: $this->price, currencyFrom: 'usd', currencyTo: 'usd');
+        return (new CurrencyService())->convert(amount: $this->price, currencyFrom: 'usd', currencyTo: 'eur');
     }
 
 }

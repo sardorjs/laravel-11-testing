@@ -128,4 +128,23 @@ class ProductsTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test_create_product_successful(): void
+    {
+        $product = [
+            'name' => 'Product 2',
+            'price' => 1234
+        ];
+        $response = $this->actingAs($this->admin)->post('/products', $product);
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/products');
+
+        $this->assertDatabaseHas('products', $product);
+
+        $lastProduct = Product::query()->latest()->first();
+
+        $this->assertEquals($product['name'], $lastProduct->name);
+        $this->assertEquals($product['price'], $lastProduct->price);
+    }
+
 }
