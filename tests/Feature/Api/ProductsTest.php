@@ -30,6 +30,16 @@ class ProductsTest extends TestCase
      * - php artisan test --filter=test_api_product_invalid_store_returns_error
      */
 
+    /**
+     * *if you don't know what features you need to test first, there is the quote for help:
+     * -- "Look for routes, and ask question - what if this route is crashed, will be I'm fired or Financial loss, if the answer is Yes, then create test them First!"
+     *
+     * 3 things that you need test first:
+     * - 1. Main page is loaded successful - status 200, no 500 status or something like that
+     * - 2. Authentication and authorization
+     * - 3. Anything related to payments
+     */
+
     protected function setUp(): void
     {
         parent::setUp();
