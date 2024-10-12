@@ -13,6 +13,7 @@ class ProductsTest extends TestCase
     //* before launching - change credentials in ./phpunit.xml file or .env.testing
     use RefreshDatabase; // always refresh migrate when launching tests
 
+    private User $user;
     /**
      * AAA "Arrange, Act, Assert" - Automated Testing - every function - must have these 3 things
      * 1) Arrange - means prepare scenario - create all need credentials, info, data to work with
@@ -22,10 +23,16 @@ class ProductsTest extends TestCase
      * * make test for each scenario
      */
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = $this->createUser();
+    }
+
     public function test_products_page_contains_empty_table(): void
     {
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->get('/products');
+        $response = $this->actingAs($this->user)->get('/products');
 
         $response->assertStatus(200);
 
@@ -34,13 +41,11 @@ class ProductsTest extends TestCase
 
     public function test_products_page_contains_non_empty_table(): void
     {
-        $user = User::factory()->create();
-
         $product = Product::create([
             'name' => "Product 2",
             'price' => 1234
         ]);
-        $response = $this->actingAs($user)->get('/products');
+        $response = $this->actingAs($this->user)->get('/products');
 
         $response->assertStatus(200);
         $response->assertDontSee('No products found');
@@ -53,7 +58,6 @@ class ProductsTest extends TestCase
 
     public function test_paginated_products_table_doesnt_contain_11th_record(): void
     {
-        $user = User::factory()->create();
         for ($i = 1; $i <= 11; $i++) {
             $product = Product::create([
                 'name' => "Product $i",
@@ -61,7 +65,7 @@ class ProductsTest extends TestCase
             ]);
         }
 
-        $response = $this->actingAs($user)->get('/products');
+        $response = $this->actingAs($this->user)->get('/products');
 
         $response->assertStatus(200);
 
@@ -73,18 +77,21 @@ class ProductsTest extends TestCase
 
     public function test_paginated_products_table_doesnt_contain_11th_record_via_factory(): void
     {
-        $user = User::factory()->create();
-
         $products = Product::factory()->count(11)->create();
         $lastProduct = $products->last();
 
-        $response = $this->actingAs($user)->get('/products');
+        $response = $this->actingAs($this->user)->get('/products');
 
         $response->assertStatus(200);
 
         $response->assertViewHas('products', function($collection) use ($lastProduct){
             return !$collection->contains($lastProduct);
         });
+    }
+
+    private function createUser(): User
+    {
+        return User::factory()->create();
     }
 
 }
