@@ -10,8 +10,34 @@
  * * green - write code so test would be successful
  * * refactor - code so it would be well written
  */
+beforeEach(function(){
+    $this->user = createUser();
+    $this->admin = createUser(true);
+});
 
 test('unauthenticated user cannot access products page', function () {
     $this->get('/tdd/products')
         ->assertRedirect('/login');
+});
+
+
+test('homepage contains empty table', function (){
+    $this->actingAs($this->user)
+        ->get('/tdd/products')
+        ->assertStatus(200)
+        ->assertSee('No products found');
+});
+
+test('homepage contains non empty table', function (){
+    $product = \App\Models\Product::factory()->create();
+
+    $this->actingAs($this->user)
+        ->get('/tdd/products')
+        ->assertStatus(200)
+        ->assertDontSee('No products found')
+        ->assertSee($product->title)
+        ->assertViewHas('products', function ($collection) use ($product){
+            return $collection->contains($product);
+        });
+
 });
