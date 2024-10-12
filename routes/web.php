@@ -30,5 +30,9 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::prefix('tdd/')->name('tdd.')->middleware(['auth'])->group(function () {
+   Route::get('/products', [\App\Http\Controllers\TddProductController::class, 'index'])->name('products.index');
+});
+
 
 require __DIR__.'/auth.php';
