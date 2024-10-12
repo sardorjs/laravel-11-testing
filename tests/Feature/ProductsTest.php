@@ -172,5 +172,21 @@ class ProductsTest extends TestCase
         $response->assertInvalid(['name', 'price']);
     }
 
+    public function test_product_delete_successful()
+    {
+        $product = Product::factory()->create();
+
+        $this->assertCount(1, Product::query()->get());
+
+        $response = $this->actingAs($this->admin)->delete('products/'. $product->id);
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/products');
+
+        $this->assertDatabaseMissing('products', $product->toArray());
+        $this->assertDatabaseCount('products', 0);
+
+    }
+
 
 }
